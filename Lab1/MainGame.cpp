@@ -488,8 +488,10 @@ void MainGame::processInput()
 	}
 
 	auto keystate = SDL_GetKeyboardState(NULL);
-	if (keystate[SDL_SCANCODE_ESCAPE])
+	if (keystate[SDL_SCANCODE_ESCAPE] && escInputCooldown <= chrono::steady_clock::now())
 	{
+		escInputCooldown = chrono::steady_clock::now() + 250ms;
+
 		yesno = !(bool)SDL_GetRelativeMouseMode();
 
 		SDL_SetRelativeMouseMode((SDL_bool)(int)yesno);

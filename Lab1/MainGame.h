@@ -115,6 +115,8 @@ private:
 	double deltaTime;
 	float framerate;
 	float framesCompleted;
+
+	chrono::steady_clock::time_point escInputCooldown;
 	chrono::high_resolution_clock::time_point prevFrameStart;
 	chrono::steady_clock::time_point second;
 };
