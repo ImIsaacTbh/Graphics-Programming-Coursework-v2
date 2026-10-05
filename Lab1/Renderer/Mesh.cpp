@@ -1,19 +1,24 @@
 #include "Renderer/Mesh.h"
-#include "ThirdParty/objl/objLoader.h"
 
 #include <iostream>
 #include <vector>
 #include <glm/glm.hpp>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
 
-Mesh::Mesh(const std::string& objPath)
+Mesh::Mesh(const std::string& modelPath)
 {
-	objl::Loader loader;
-	if (!loader.LoadFile(objPath) || loader.LoadedMeshes.empty())
+	Assimp::Importer importer;
+	// c_str(): Debug builds can't pass std::string across the prebuilt (Release) Windows DLL
+	const aiScene* scene = importer.ReadFile(modelPath.c_str(),
+		aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals);
+	if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || scene->mNumMeshes == 0)
 	{
-		std::cerr << "Failed to load model: " << objPath << std::endl;
+		std::cerr << "Failed to load model: " << modelPath << " (" << importer.GetErrorString() << ")" << std::endl;
 		return;
 	}
-	Upload(loader.LoadedMeshes[0]);
+	Upload(*scene);
 }
 
 Mesh::~Mesh()
@@ -23,25 +28,45 @@ Mesh::~Mesh()
 	glDeleteBuffers(NUM_BUFFERS, vertexArrayBuffers);
 }
 
-void Mesh::Upload(const objl::Mesh& model)
+void Mesh::Upload(const aiScene& scene)
 {
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> texCoords;
 	std::vector<glm::vec3> normals;
+	std::vector<unsigned int> indices;
 
-	positions.reserve(model.Vertices.size());
-	texCoords.reserve(model.Vertices.size());
-	normals.reserve(model.Vertices.size());
-
-	for (size_t i = 0; i < model.Vertices.size(); ++i)
+	// Merge every sub-mesh into one set of buffers
+	for (unsigned int m = 0; m < scene.mNumMeshes; ++m)
 	{
-		const auto& v = model.Vertices[i];
-		positions.emplace_back(v.Position.X, v.Position.Y, v.Position.Z);
-		texCoords.emplace_back(v.TextureCoordinate.X, -v.TextureCoordinate.Y);
-		normals.emplace_back(v.Normal.X, v.Normal.Y, v.Normal.Z);
+		const aiMesh& mesh = *scene.mMeshes[m];
+		const unsigned int baseVertex = static_cast<unsigned int>(positions.size());
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; ++i)
+		{
+			const aiVector3D& p = mesh.mVertices[i];
+			positions.emplace_back(p.x, p.y, p.z);
+
+			if (mesh.HasTextureCoords(0))
+				texCoords.emplace_back(mesh.mTextureCoords[0][i].x, -mesh.mTextureCoords[0][i].y);
+			else
+				texCoords.emplace_back(0.0f, 0.0f);
+
+			if (mesh.HasNormals())
+				normals.emplace_back(mesh.mNormals[i].x, mesh.mNormals[i].y, mesh.mNormals[i].z);
+			else
+				normals.emplace_back(0.0f, 0.0f, 0.0f);
+		}
+
+		for (unsigned int f = 0; f < mesh.mNumFaces; ++f)
+		{
+			const aiFace& face = mesh.mFaces[f];
+			if (face.mNumIndices != 3) continue; // skip points/lines
+			for (unsigned int k = 0; k < 3; ++k)
+				indices.push_back(baseVertex + face.mIndices[k]);
+		}
 	}
 
-	drawCount = static_cast<unsigned int>(model.Indices.size());
+	drawCount = static_cast<unsigned int>(indices.size());
 
 	glGenVertexArrays(1, &vertexArrayObject);
 	glBindVertexArray(vertexArrayObject);
@@ -68,7 +93,7 @@ void Mesh::Upload(const objl::Mesh& model)
 
 	// Indices
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexArrayBuffers[INDEX_VB]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.Indices.size() * sizeof(model.Indices[0]), model.Indices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 }

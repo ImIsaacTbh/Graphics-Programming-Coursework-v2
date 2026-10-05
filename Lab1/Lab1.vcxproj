@@ -49,13 +49,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;ASSIMP_DLL</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)deps\bin\assimp-vc143-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -64,7 +67,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;WINDOWS_IGNORE_PACKING_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;WINDOWS_IGNORE_PACKING_MISMATCH;ASSIMP_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>
       $(ProjectDir);
       $(ProjectDir)..\deps\include;
@@ -81,9 +84,12 @@
       %(AdditionalLibraryDirectories)
     </AdditionalLibraryDirectories>
       <AdditionalDependencies>
-      SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)
+      SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)
     </AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)deps\bin\assimp-vc143-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -142,7 +148,6 @@
     <ClInclude Include="ThirdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="ThirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="ThirdParty\imgui\imstb_truetype.h" />
-    <ClInclude Include="ThirdParty\objl\objLoader.h" />
     <ClInclude Include="ThirdParty\stb\STB.h" />
   </ItemGroup>
   <ItemGroup>

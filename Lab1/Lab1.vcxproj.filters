@@ -186,9 +186,6 @@
     <ClInclude Include="ThirdParty\imgui\imstb_truetype.h">
       <Filter>ThirdParty</Filter>
     </ClInclude>
-    <ClInclude Include="ThirdParty\objl\objLoader.h">
-      <Filter>ThirdParty</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\stb\STB.h">
       <Filter>ThirdParty</Filter>
     </ClInclude>

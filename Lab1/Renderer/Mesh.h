@@ -2,13 +2,13 @@
 #include <string>
 #include <GL/glew.h>
 
-namespace objl { struct Mesh; }
+struct aiScene;
 
-// GPU geometry loaded from an .obj file. Shading lives in Material.
+// GPU geometry loaded from a model file via Assimp. Shading lives in Material.
 class Mesh
 {
 public:
-	explicit Mesh(const std::string& objPath);
+	explicit Mesh(const std::string& modelPath);
 	~Mesh();
 
 	Mesh(const Mesh&) = delete;
@@ -17,7 +17,7 @@ public:
 	void Draw() const;
 
 private:
-	void Upload(const objl::Mesh& model);
+	void Upload(const aiScene& scene);
 
 	enum
 	{

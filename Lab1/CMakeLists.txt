@@ -47,7 +47,7 @@ target_include_directories(GP2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_definitions(GP2 PRIVATE GP2_RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Resources/")
 
 if (WIN32)
-    # Prebuilt 32-bit libraries + headers in deps/
+    # Prebuilt 32-bit libraries + headers in deps/ (DLLs in deps/bin/ and Debug/)
     if (CMAKE_SIZEOF_VOID_P EQUAL 8)
         message(WARNING "deps/lib only contains 32-bit (x86) libraries. Use an x86 toolchain "
                         "(in CLion: Settings > Build > Toolchains > Visual Studio, Architecture: x86).")
@@ -55,8 +55,8 @@ if (WIN32)
 
     target_include_directories(GP2 PRIVATE ${DEPS_DIR}/include)
     target_link_directories(GP2 PRIVATE ${DEPS_DIR}/lib)
-    target_link_libraries(GP2 PRIVATE SDL2main SDL2 glew32 opengl32)
-    target_compile_definitions(GP2 PRIVATE WINDOWS_IGNORE_PACKING_MISMATCH _CRT_SECURE_NO_WARNINGS)
+    target_link_libraries(GP2 PRIVATE SDL2main SDL2 glew32 opengl32 assimp-vc143-mt)
+    target_compile_definitions(GP2 PRIVATE WINDOWS_IGNORE_PACKING_MISMATCH _CRT_SECURE_NO_WARNINGS ASSIMP_DLL)
 
     if (MSVC)
         target_link_options(GP2 PRIVATE /IGNORE:4099 /SUBSYSTEM:CONSOLE)
@@ -68,6 +68,9 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 ${CMAKE_CURRENT_SOURCE_DIR}/../Debug/${dll} $<TARGET_FILE_DIR:GP2>)
     endforeach()
+    add_custom_command(TARGET GP2 POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${DEPS_DIR}/bin/assimp-vc143-mt.dll $<TARGET_FILE_DIR:GP2>)
 else()
     # System packages (Arch: pacman -S sdl2 glew, Debian/Ubuntu: apt install libsdl2-dev libglew-dev)
     find_package(SDL2 REQUIRED)
@@ -85,4 +88,25 @@ else()
 
     target_include_directories(GP2 PRIVATE ${SHIM_DIR})
     target_link_libraries(GP2 PRIVATE SDL2::SDL2 GLEW::GLEW OpenGL::GL)
+
+    # Assimp: use an installed copy if there is one, otherwise build it from source (OBJ importer only)
+    find_package(assimp CONFIG QUIET)
+    if (NOT assimp_FOUND)
+        include(FetchContent)
+        set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+        set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+        set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+        set(ASSIMP_BUILD_ZLIB ON CACHE BOOL "" FORCE)
+        set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
+        set(ASSIMP_NO_EXPORT ON CACHE BOOL "" FORCE)
+        set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF CACHE BOOL "" FORCE)
+        set(ASSIMP_BUILD_OBJ_IMPORTER ON CACHE BOOL "" FORCE)
+        set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+        FetchContent_Declare(assimp
+            GIT_REPOSITORY https://github.com/assimp/assimp.git
+            GIT_TAG v6.0.5
+            GIT_SHALLOW TRUE)
+        FetchContent_MakeAvailable(assimp)
+    endif()
+    target_link_libraries(GP2 PRIVATE assimp::assimp)
 endif()
