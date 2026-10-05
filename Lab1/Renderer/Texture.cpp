@@ -1,5 +1,5 @@
-#include "Texture.h"
-#include "STB.h"
+#include "Renderer/Texture.h"
+#include "ThirdParty/stb/STB.h"
 #include <cassert>
 #include <iostream>
 
@@ -14,14 +14,28 @@ Texture::Texture(const std::string& fileName)
 	{
 		std::cerr << "texture load failed" << fileName << std::endl;
 	}
+	Upload(width, height, imageData);
+	stbi_image_free(imageData);
+}
+
+std::unique_ptr<Texture> Texture::CreateWhite()
+{
+	const unsigned char white[4] = { 255, 255, 255, 255 };
+
+	std::unique_ptr<Texture> texture(new Texture());
+	texture->Upload(1, 1, white);
+	return texture;
+}
+
+void Texture::Upload(int width, int height, const unsigned char* rgba)
+{
 	glGenTextures(1, &textureHandler);
 	glBindTexture(GL_TEXTURE_2D, textureHandler);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-	stbi_image_free(imageData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
 }
 
 Texture::~Texture()
@@ -31,7 +45,7 @@ Texture::~Texture()
 
 void Texture::Bind(unsigned int unit)
 {
-	assert(unit >= 0 && unit <= 31);
+	assert(unit <= 31);
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(GL_TEXTURE_2D, textureHandler);
 }

@@ -2,10 +2,8 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
-#include "camera.h"
 
 struct Transform
-
 {
 public:
 	Transform(const glm::vec3& pos = glm::vec3(), const glm::vec3& rot = glm::vec3(), const
@@ -16,7 +14,7 @@ public:
 		this->scale = scale;
 	}
 
-	inline glm::mat4 GetModel() const //runs as compile time
+	inline glm::mat4 GetModel() const
 	{
 		glm::mat4 posMat = glm::translate(pos);
 		glm::mat4 scaleMat = glm::scale(scale);
@@ -29,23 +27,14 @@ public:
 		return posMat * rotMat * scaleMat;
 	}
 
-	inline glm::mat4 GetMVP(const Camera& camera) const
-	{
-		glm::mat4 VP = camera.GetViewProjection();
-		glm::mat4 M = GetModel();
-
-		return VP * M;//camera.GetViewProjection() * GetModel();
-	}
-
-	inline glm::vec3* GetPos() { return &pos; } //getters
-
-	inline glm::vec3* GetRot() { return &rot; }
-	inline glm::vec3* GetScale() { return &scale; }
+	inline const glm::vec3& GetPos() const { return pos; } //getters
+	inline const glm::vec3& GetRot() const { return rot; }
+	inline const glm::vec3& GetScale() const { return scale; }
 
 	inline void SetPos(const glm::vec3& pos) { this->pos = pos; } // setters
 	inline void SetRot(const glm::vec3& rot) { this->rot = rot; }
 	inline void SetScale(const glm::vec3& scale) { this->scale = scale; }
-protected:
+
 private:
 	glm::vec3 pos;
 	glm::vec3 rot;

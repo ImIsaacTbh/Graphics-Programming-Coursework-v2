@@ -41,7 +41,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)deps/include/;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(SolutionDir)deps/include/;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)deps/lib/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -65,6 +65,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
+      $(ProjectDir);
       $(ProjectDir)..\deps\include;
       %(AdditionalIncludeDirectories)
     </AdditionalIncludeDirectories>
@@ -84,67 +85,81 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Display.cpp" />
-    <ClCompile Include="IMGUI\imgui.cpp" />
-    <ClCompile Include="IMGUI\imgui_demo.cpp" />
-    <ClCompile Include="IMGUI\imgui_draw.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp" />
-    <ClCompile Include="IMGUI\imgui_tables.cpp" />
-    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="STB.c" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\FileSystem.cpp" />
+    <ClCompile Include="Core\FrameTimer.cpp" />
+    <ClCompile Include="Core\Input.cpp" />
+    <ClCompile Include="Core\Window.cpp" />
+    <ClCompile Include="Editor\EditorUI.cpp" />
+    <ClCompile Include="Game\CameraController.cpp" />
+    <ClCompile Include="Game\DemoScene.cpp" />
+    <ClCompile Include="Renderer\Mesh.cpp" />
+    <ClCompile Include="Renderer\Renderer.cpp" />
+    <ClCompile Include="Renderer\Shader.cpp" />
+    <ClCompile Include="Renderer\ShadowMaps.cpp" />
+    <ClCompile Include="Renderer\Texture.cpp" />
+    <ClCompile Include="Scene\Primitives.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_demo.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="ThirdParty\stb\STB.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="Display.h" />
-    <ClInclude Include="IMGUI\imconfig.h" />
-    <ClInclude Include="IMGUI\imgui.h" />
-    <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
-    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="IMGUI\imgui_impl_sdl2.h" />
-    <ClInclude Include="IMGUI\imgui_internal.h" />
-    <ClInclude Include="IMGUI\imstb_rectpack.h" />
-    <ClInclude Include="IMGUI\imstb_textedit.h" />
-    <ClInclude Include="IMGUI\imstb_truetype.h" />
-    <ClInclude Include="MainGame.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="objLoader.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="resource2.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="STB.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\FileSystem.h" />
+    <ClInclude Include="Core\FrameTimer.h" />
+    <ClInclude Include="Core\Input.h" />
+    <ClInclude Include="Core\Paths.h" />
+    <ClInclude Include="Core\Window.h" />
+    <ClInclude Include="Editor\EditorUI.h" />
+    <ClInclude Include="Game\CameraController.h" />
+    <ClInclude Include="Game\DemoScene.h" />
+    <ClInclude Include="Renderer\Light.h" />
+    <ClInclude Include="Renderer\Material.h" />
+    <ClInclude Include="Renderer\Mesh.h" />
+    <ClInclude Include="Renderer\Renderer.h" />
+    <ClInclude Include="Renderer\Shader.h" />
+    <ClInclude Include="Renderer\ShadowMaps.h" />
+    <ClInclude Include="Renderer\Texture.h" />
+    <ClInclude Include="Scene\Camera.h" />
+    <ClInclude Include="Scene\GameObject.h" />
+    <ClInclude Include="Scene\Primitives.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\Transform.h" />
+    <ClInclude Include="ThirdParty\imgui\imconfig.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_sdl2.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_internal.h" />
+    <ClInclude Include="ThirdParty\imgui\imstb_rectpack.h" />
+    <ClInclude Include="ThirdParty\imgui\imstb_textedit.h" />
+    <ClInclude Include="ThirdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="ThirdParty\objl\objLoader.h" />
+    <ClInclude Include="ThirdParty\stb\STB.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\res\smolSPHERE.mtl" />
-    <None Include="..\res\THE S P H E R E.mtl" />
     <None Include="Resources\colourShader.frag" />
     <None Include="Resources\colourShader.vert" />
     <None Include="Resources\depthShader.frag" />
     <None Include="Resources\depthShader.vert" />
     <None Include="Resources\funnyColourThing.frag" />
     <None Include="Resources\funnyColourThing.vert" />
+    <None Include="Resources\godRays.frag" />
+    <None Include="Resources\godRays.vert" />
+    <None Include="Resources\shadowDepth.frag" />
+    <None Include="Resources\shadowDepth.vert" />
     <None Include="Resources\textureShader.frag" />
     <None Include="Resources\textureShader.vert" />
-    <None Include="shadaer1.bin" />
-    <None Include="shadowDepth.frag" />
-    <None Include="shadowDepth.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\pikmin-red-lay-leaf.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Resources\smolSPHERE.obj">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </Object>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

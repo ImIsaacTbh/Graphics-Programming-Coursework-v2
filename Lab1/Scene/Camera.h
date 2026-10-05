@@ -1,5 +1,4 @@
-#ifndef CAMERA_INCLUDED_H
-#define CAMERA_INCLUDED_H
+#pragma once
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -16,6 +15,7 @@ public:
 	}
 
 	Camera()
+		: projection(1.0f), pos(0.0f), forward(0.0f, 0.0f, 1.0f), up(0.0f, 1.0f, 0.0f)
 	{}
 
 	inline glm::mat4 GetViewProjection() const
@@ -52,17 +52,15 @@ public:
 		forward = glm::vec3(glm::normalize(rotation * glm::vec4(forward, 0.0)));
 		up = glm::vec3(glm::normalize(rotation * glm::vec4(up, 0.0)));
 	}
+
 	inline glm::vec3 GetPosition() const
 	{
 		return pos;
 	}
 
-protected:
 private:
 	glm::mat4 projection;
 	glm::vec3 pos;
 	glm::vec3 forward;
 	glm::vec3 up;
 };
-
-#endif

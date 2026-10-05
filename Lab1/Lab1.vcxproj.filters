@@ -1,180 +1,234 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Core">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000001}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000002}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Game">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{5d1f0c0a-1a6e-4b8e-9c11-0a0000000007}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Core\Application.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\FileSystem.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Display.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\FrameTimer.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\Input.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\Window.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="STB.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Editor\EditorUI.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Game\CameraController.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Game\DemoScene.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderer\Mesh.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderer\Renderer.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderer\Shader.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderer\ShadowMaps.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderer\Texture.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Scene\Primitives.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Scene\Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui_demo.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui_draw.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui_impl_opengl3.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui_impl_sdl2.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui_tables.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp">
+      <Filter>ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\stb\STB.c">
+      <Filter>ThirdParty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainGame.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\Application.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Display.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\FileSystem.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\FrameTimer.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\Input.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="STB.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\Paths.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\Window.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Editor\EditorUI.h">
+      <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Game\CameraController.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="objLoader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Game\DemoScene.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\Light.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\Material.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="resource2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\Mesh.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imconfig.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\Renderer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\Shader.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_internal.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\ShadowMaps.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Renderer\Texture.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imstb_textedit.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Scene\Camera.h">
+      <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imstb_truetype.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Scene\GameObject.h">
+      <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Scene\Primitives.h">
+      <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Scene\Scene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_sdl2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Scene\Transform.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imconfig.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imgui.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_opengl3.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_sdl2.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imgui_internal.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imstb_rectpack.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imstb_textedit.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\imgui\imstb_truetype.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\objl\objLoader.h">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\stb\STB.h">
+      <Filter>ThirdParty</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\funnyColourThing.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Resources\funnyColourThing.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Resources\textureShader.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Resources\textureShader.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\smolSPHERE.mtl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\THE S P H E R E.mtl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Resources\depthShader.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Resources\depthShader.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="shadaer1.bin">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Resources\colourShader.frag">
-      <Filter>Resource Files</Filter>
+      <Filter>Resources</Filter>
     </None>
     <None Include="Resources\colourShader.vert">
-      <Filter>Resource Files</Filter>
+      <Filter>Resources</Filter>
     </None>
-    <None Include="shadowDepth.vert">
-      <Filter>Resource Files</Filter>
+    <None Include="Resources\depthShader.frag">
+      <Filter>Resources</Filter>
     </None>
-    <None Include="shadowDepth.frag">
-      <Filter>Resource Files</Filter>
+    <None Include="Resources\depthShader.vert">
+      <Filter>Resources</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\pikmin-red-lay-leaf.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Resources\smolSPHERE.obj">
-      <Filter>Resource Files</Filter>
-    </Object>
+    <None Include="Resources\funnyColourThing.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\funnyColourThing.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\godRays.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\godRays.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\shadowDepth.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\shadowDepth.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\textureShader.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\textureShader.vert">
+      <Filter>Resources</Filter>
+    </None>
   </ItemGroup>
 </Project>
