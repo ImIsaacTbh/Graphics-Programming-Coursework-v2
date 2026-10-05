@@ -4,6 +4,23 @@ This project is going to be a 3d renderer built in OpenGL, SDL and GLEW with as 
 
 Copyright Isaac Marrs 2025
 
+## Building
+
+**CLion / CMake:** open the repository root in CLion and run the `GP2` target. From a terminal:
+
+```
+cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
+./build/Lab1/GP2
+```
+
+- **Linux:** needs SDL2 and GLEW from your package manager (Arch: `pacman -S sdl2 glew`; Debian/Ubuntu: `apt install libsdl2-dev libglew-dev`). glm comes from `deps/`.
+- **Windows:** uses the prebuilt 32-bit libraries in `deps/`, so pick an **x86** Visual Studio toolchain. `SDL2.dll` and `glew32.dll` are copied next to the exe after each build.
+
+CMake builds load assets from `Lab1/Resources/` by absolute path, so they run from any working directory.
+
+**Visual Studio:** open `GP2.sln`, pick `Debug | Win32` and run.
+
 ## Engine layout
 
 All engine code lives in `Lab1/`. Includes are written relative to that folder (e.g. `#include "Renderer/Shader.h"`).

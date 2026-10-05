@@ -27,6 +27,11 @@ void Window::SwapBuffers()
 
 void Window::Init()
 {
+#ifdef __linux__
+	// Distro GLEW builds use GLX, which fails to initialise on a native Wayland
+	// window, so prefer X11 (XWayland). The SDL_VIDEODRIVER env var still overrides this.
+	SDL_SetHint(SDL_HINT_VIDEODRIVER, "x11");
+#endif
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
