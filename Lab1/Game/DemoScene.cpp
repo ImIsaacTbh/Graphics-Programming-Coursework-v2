@@ -19,10 +19,8 @@ void DemoScene::Load(Scene& scene, float aspectRatio)
 
 	scene.camera = Camera(glm::vec3(0, 0, -4), 5, aspectRatio, 0.1f, 10000);
 
-	scene.lights = {
-		{ glm::vec3(0.0f),				glm::vec3(1.0f, 1.0f, 1.0f) }, // orbiting, positioned in Update
-		{ glm::vec3(30.0f, -5.0f, 30.0f), glm::vec3(1.0f, 0.8f, 0.6f) }
-	};
+	_orbitLightId = scene.AddLight(glm::vec3(0.0f), glm::vec3(1.0f), "Orbit Light").id;
+	scene.AddLight(glm::vec3(30.0f, -5.0f, 30.0f), glm::vec3(1.0f, 0.8f, 0.6f), "Warm Light");
 
 }
 
@@ -30,7 +28,8 @@ void DemoScene::Update(Scene& scene)
 {
 	glm::vec3 lightPos(glm::sin(_counter) * 10, -glm::abs(glm::sin(_counter * 5)), glm::cos(_counter) * 10);
 
-	scene.lights[0].position = lightPos;
+	if (Light* light = scene.FindLightById(_orbitLightId))
+		light->position = lightPos;
 
 	if (GameObject* monkey = scene.FindById(_texturedMonkeyId))
 		monkey->transform.SetRot(glm::vec3(0.0, _counter * 2, 0.0));

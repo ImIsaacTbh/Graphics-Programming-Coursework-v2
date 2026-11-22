@@ -1,4 +1,6 @@
 #include "Scene/Scene.h"
+
+#include <algorithm>
 #include <memory>
 
 int Scene::NextId() const
@@ -42,6 +44,29 @@ GameObject* Scene::FindById(int id)
 	for (GameObject& obj : _objects)
 	{
 		if (obj.id == id) return &obj;
+	}
+	return nullptr;
+}
+
+Light& Scene::AddLight(const glm::vec3& position, const glm::vec3& color, const std::string& name) {
+	Light light;
+	light.id = _nextLightId++;
+	light.position = position;
+	light.color = color;
+	std::string displayName = name.empty() ? "Light " + std::to_string(light.id) : name;
+	snprintf(light.name, sizeof(light.name), "%s", displayName.c_str());
+
+	_lights.push_back(light);
+	return _lights.back();
+}
+
+void Scene::RemoveLight(int id) {
+	_lights.erase(std::remove_if(_lights.begin(), _lights.end(), [id](const Light& l) { return l.id == id; }), _lights.end());
+}
+
+Light* Scene::FindLightById(int id) {
+	for(Light& l : _lights) {
+		if (l.id == id) return &l;
 	}
 	return nullptr;
 }

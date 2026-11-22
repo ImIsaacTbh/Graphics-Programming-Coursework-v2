@@ -24,7 +24,7 @@ public:
 	// Per-object matrices, camera position and the primary light.
 	// void Update(const Transform& transform, const Camera& camera, const glm::vec3& lightPos, const glm::mat4& lightSpaceMatrix, const glm::vec3& basicColor = glm::vec3(0, 0, 0));
 	void Update(const Transform& transform, const Camera& camera, const glm::vec3& basicColor = glm::vec3(0));
-	void SetLights(const std::vector<Light>& lights);
+	void SetLights(const std::vector<Light>& lights, const std::vector<int>& shadowSlots);
 	void SetLightSpaceMatrices(const std::vector<glm::mat4>& matrices);
 	void SetTexture(const std::string& name, GLuint textureID, int unit);
 	void SetMat4(const std::string& name, const glm::mat4& value);

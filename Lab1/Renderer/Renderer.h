@@ -18,7 +18,15 @@ public:
 	void Render(const Scene& scene, const Window& window);
 
 private:
-	void DrawObjects(const Scene& scene, const std::vector<glm::mat4>&lightSpaceMatrices);
+	struct FrameLights {
+		std::vector<Light> shaded; // enabled lights
+		std::vector<int> shadowSlot; // on per shaded light
+		std::vector<glm::mat4> lightSpace; // one per used shadow slot
+	};
+	static FrameLights GatherLights(const std::vector<Light>& lights);
+	static glm::mat4 LightSpaceMatrix(const Light& light);
+
+	void DrawObjects(const Scene& scene, const FrameLights& frame);
 	static std::vector<glm::mat4> CalculateLightSpaceMatrices(const std::vector<Light>&lights);
 
 	ShadowMaps _shadowMaps;

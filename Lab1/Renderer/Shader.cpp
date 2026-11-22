@@ -68,7 +68,7 @@ void Shader::SetMat4(const std::string& uniformName, const glm::mat4& value)
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::SetLights(const std::vector<Light>& lights)
+void Shader::SetLights(const std::vector<Light>& lights, const std::vector<int>& shadowSlots)
 {
 	int count = std::min((int)lights.size(), MaxLights);
 
@@ -76,12 +76,17 @@ void Shader::SetLights(const std::vector<Light>& lights)
 	{
 		std::string posName = "lightPos[" + std::to_string(i) + "]";
 		std::string colName = "lightColor[" + std::to_string(i) + "]";
+		std::string shadowName = "shadowIndex[" + std::to_string(i) + "]";
 
 		GLint posLoc = glGetUniformLocation(program, posName.c_str());
 		GLint colLoc = glGetUniformLocation(program, colName.c_str());
+		GLint shadowLoc = glGetUniformLocation(program, shadowName.c_str());
+
+		glm::vec3 radiance = lights[i].color * lights[i].intensity;
 
 		if (posLoc != -1) glUniform3fv(posLoc, 1, glm::value_ptr(lights[i].position));
 		if (colLoc != -1) glUniform3fv(colLoc, 1, glm::value_ptr(lights[i].color));
+		if (shadowLoc != -1) glUniform1f(shadowLoc, shadowSlots[i]);
 	}
 
 	GLint numLoc = glGetUniformLocation(program, "numLights");

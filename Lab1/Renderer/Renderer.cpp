@@ -18,16 +18,16 @@ void Renderer::Init()
 
 void Renderer::Render(const Scene& scene, const Window& window)
 {
-	std::vector<glm::mat4> lightSpace = CalculateLightSpaceMatrices(scene.lights);
 	// PASS 1: shadow maps
-	_shadowMaps.Render(lightSpace, scene.GetObjects(), *_shadowShader);
+	FrameLights frame = GatherLights(scene.GetLights());
+	_shadowMaps.Render(frame.lightSpace, scene.GetObjects(), *_shadowShader);
 
 	// PASS 2: lit scene to the screen
 	glViewport(0, 0, window.GetWidth(), window.GetHeight());
 	glCullFace(GL_BACK);
 	glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	DrawObjects(scene, lightSpace);
+	DrawObjects(scene, frame);
 }
 
 //being replaced rn delete later
@@ -43,23 +43,50 @@ void Renderer::Render(const Scene& scene, const Window& window)
 // 	return matrices;
 // }
 
-std::vector<glm::mat4> Renderer::CalculateLightSpaceMatrices(const std::vector<Light>& lights) {
-	const glm::vec3 target(0.0f);
-	std::vector<glm::mat4> matrices;
-	for (const Light& light : lights) {
-		glm::vec3 dir = glm::normalize(target - light.position);
-		glm::vec3 up = std::abs(dir.y) > 0.99f ? glm::vec3(0, 0, 1) : glm::vec3(0, 1, 0);
+// std::vector<glm::mat4> Renderer::CalculateLightSpaceMatrices(const std::vector<Light>& lights) {
+// 	const glm::vec3 target(0.0f);
+// 	std::vector<glm::mat4> matrices;
+// 	for (const Light& light : lights) {
+// 		glm::vec3 dir = glm::normalize(target - light.position);
+// 		glm::vec3 up = std::abs(dir.y) > 0.99f ? glm::vec3(0, 0, 1) : glm::vec3(0, 1, 0);
+//
+// 		glm::mat4 view = glm::lookAt(light.position, target, up);
+// 		glm::mat4 proj = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 1000.0f);
+// 		matrices.push_back(view * proj);
+// 	}
+// 	return matrices;
+// }
 
-		glm::mat4 view = glm::lookAt(light.position, target, up);
-		glm::mat4 proj = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 1000.0f);
-		matrices.push_back(view * proj);
-	}
-	return matrices;
+glm::mat4 Renderer::LightSpaceMatrix(const Light& light) {
+	const glm::vec3 target(0.0f);
+	glm::vec3 dir = glm::normalize(target - light.position);
+	glm::vec3 up = std::abs(dir.y) > 0.99f ? glm::vec3(0, 0, 1) : glm::vec3(0, 1, 0);
+
+	glm::mat4 view = glm::lookAt(light.position, target, up);
+	glm::mat4 proj = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 1000.0f);
+	return proj * view;
 }
 
-void Renderer::DrawObjects(const Scene& scene, const std::vector<glm::mat4>& matrices)
+Renderer::FrameLights Renderer::GatherLights(const std::vector<Light>& lights) {
+	FrameLights frame;
+	for (const Light& light : lights) {
+		if ( !light.enabled) continue;
+		if ((int)frame.shaded.size() == MaxLights) break;
+
+		int slot = -1;
+		if (light.castsShadows && (int)frame.lightSpace.size() < MaxShadowedLights) {
+			slot = (int)frame.lightSpace.size();
+			frame.lightSpace.push_back(LightSpaceMatrix(light));
+		}
+		frame.shaded.push_back(light);
+		frame.shadowSlot.push_back(slot);
+	}
+	return frame;
+}
+
+void Renderer::DrawObjects(const Scene& scene, const FrameLights& frame)
 {
-	int shadowedLights = std::min((int)scene.lights.size(), MaxLights);
+	int shadowSlots = (int)frame.lightSpace.size();
 
 	for (const GameObject& obj : scene.GetObjects())
 	{
@@ -68,13 +95,13 @@ void Renderer::DrawObjects(const Scene& scene, const std::vector<glm::mat4>& mat
 
 		shader->Bind();
 		shader->Update(obj.transform, scene.camera, obj.material.basicColor);
-		shader->SetLights(scene.lights);
-		shader->SetLightSpaceMatrices(matrices);
+		shader->SetLights(frame.shaded, frame.shadowSlot);
+		shader->SetLightSpaceMatrices(frame.lightSpace);
 
 		const Texture* diffuse = obj.material.diffuse ? obj.material.diffuse.get() : _whiteTexture.get();
 		shader->SetTexture("diffuse", diffuse->GetID(), 0);
 
-		for (int l = 0; l < shadowedLights; l++)
+		for (int l = 0; l < shadowSlots; l++)
 		{
 			shader->SetTexture("shadowMap[" + std::to_string(l) + "]", _shadowMaps.GetTexture(l), ShadowMapFirstUnit + l);
 		}

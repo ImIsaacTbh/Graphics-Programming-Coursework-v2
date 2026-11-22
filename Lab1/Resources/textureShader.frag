@@ -6,9 +6,11 @@ in vec3 N;
 
 uniform sampler2D diffuse;
 
-#define MAX_LIGHTS 4
+#define MAX_LIGHTS 32
 uniform sampler2D shadowMap[MAX_LIGHTS];
 uniform mat4 lightSpaceMatrix[MAX_LIGHTS];
+
+uniform int shadowIndex[MAX_LIGHTS];
 
 uniform vec3 lightPos[MAX_LIGHTS];
 uniform vec3 lightColor[MAX_LIGHTS];
@@ -19,9 +21,9 @@ uniform vec3 viewPos;
 
 out vec4 FragColor;
 
-float ShadowCalculation(int lightIndex)
+float ShadowCalculation(int slot)
 {
-    vec4 fragPosLightSpace = lightSpaceMatrix[lightIndex] * vec4(fragPos, 1.0);
+    vec4 fragPosLightSpace = lightSpaceMatrix[slot] * vec4(fragPos, 1.0);
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
 
@@ -32,13 +34,13 @@ float ShadowCalculation(int lightIndex)
     float currentDepth = projCoords.z;
     float bias = 0.005;
     float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(shadowMap[lightIndex], 0);
+    vec2 texelSize = 1.0 / textureSize(shadowMap[slot], 0);
 
     for (int x = -1; x <= 1; ++x)
     {
         for (int y = -1; y <= 1; ++y)
         {
-            float pcfDepth = texture(shadowMap[lightIndex], projCoords.xy + vec2(x, y) * texelSize).r;
+            float pcfDepth = texture(shadowMap[slot], projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
@@ -73,8 +75,7 @@ void main()
         vec3 specular = spec * lightColor[i] * baseColor;
 
         // Shadow for this light
-        float shadow = ShadowCalculation(i);
-
+        float shadow = shadowIndex[i] >= 0 ? ShadowCalculation(shadowIndex[i]) : 0.0;
         result += (1.0 - shadow) * (diffuseLight + specular);
     }
 

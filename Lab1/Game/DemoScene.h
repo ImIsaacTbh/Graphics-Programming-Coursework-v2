@@ -17,4 +17,5 @@ private:
 	int _texturedMonkeyId = -1;
 	int _colourMonkeyId = -1;
 	int _lightMarkerId = -1;
+	int _orbitLightId = -1;
 };

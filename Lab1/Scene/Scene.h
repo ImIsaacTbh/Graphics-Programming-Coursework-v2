@@ -30,13 +30,18 @@ public:
 	// Lights used for shading.
 	std::vector<Light> lights;
 
-	// Viewpoints the shadow maps are rendered from (one map per entry, up to MaxLights).
-	// NOTE: these are kept separate from `lights` to preserve existing behaviour; they
-	// do not currently line up with the lights the shaders sample shadows for.
-	//std::vector<glm::vec3> shadowCasterPositions;
+	Light& AddLight(const glm::vec3& position, const glm::vec3& color = glm::vec3(1.0f), const std::string& name = "");
+	void RemoveLight(int id);
+	Light* FindLightById(int id);
+
+	std::vector<Light>& GetLights() { return _lights; }
+	const std::vector<Light>& GetLights() const { return _lights; }
 
 private:
 	int NextId() const;
 
 	std::vector<GameObject> _objects;
+	std::vector<Light> _lights;
+	int _nextLightId = 0;
+
 };
