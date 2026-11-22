@@ -22,7 +22,8 @@ public:
 	void Bind();
 
 	// Per-object matrices, camera position and the primary light.
-	void Update(const Transform& transform, const Camera& camera, const glm::vec3& lightPos, const glm::mat4& lightSpaceMatrix, const glm::vec3& basicColor = glm::vec3(0, 0, 0));
+	// void Update(const Transform& transform, const Camera& camera, const glm::vec3& lightPos, const glm::mat4& lightSpaceMatrix, const glm::vec3& basicColor = glm::vec3(0, 0, 0));
+	void Update(const Transform& transform, const Camera& camera, const glm::vec3& basicColor = glm::vec3(0));
 	void SetLights(const std::vector<Light>& lights);
 	void SetLightSpaceMatrices(const std::vector<glm::mat4>& matrices);
 	void SetTexture(const std::string& name, GLuint textureID, int unit);
@@ -41,12 +42,9 @@ private:
 	{
 		TRANSFORM_U,
 		MODEL_U,
-		LIGHT_POS_U,
-		LIGHT_COLOR_U,
 		AMBIENT_COLOR_U,
 		BASIC_COLOUR_U,
 		VIEW_POS_U,
-		LIGHT_SPACE_MATRIX_U,
 
 		NUM_UNIFORMS
 	};

@@ -18,8 +18,8 @@ public:
 	void Render(const Scene& scene, const Window& window);
 
 private:
-	void DrawObjects(const Scene& scene);
-	static std::vector<glm::mat4> CalculateLightSpaceMatrices(const Scene& scene);
+	void DrawObjects(const Scene& scene, const std::vector<glm::mat4>&lightSpaceMatrices);
+	static std::vector<glm::mat4> CalculateLightSpaceMatrices(const std::vector<Light>&lights);
 
 	ShadowMaps _shadowMaps;
 	std::unique_ptr<Shader> _shadowShader;

@@ -33,16 +33,15 @@ void ShadowMaps::Init()
 	_initialized = true;
 }
 
-void ShadowMaps::Render(const std::vector<glm::vec3>& casterPositions, const std::vector<GameObject>& objects, Shader& depthShader)
+void ShadowMaps::Render(const std::vector<glm::mat4>& lightSpaceMatrices, const std::vector<GameObject>& objects, Shader& depthShader)
 {
 	depthShader.Bind();
 
-	for (int l = 0; l < (int)casterPositions.size() && l < MaxLights; l++)
+	for (int l = 0; l < (int)lightSpaceMatrices.size() && l < MaxLights; l++)
 	{
-		glm::mat4 lightView = glm::lookAt(casterPositions[l], glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
-		glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, 0.1f, 1000.0f);
-		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-
+		// glm::mat4 lightView = glm::lookAt(casterPositions[l], glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+		// glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, 0.1f, 1000.0f);
+		// glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 		glBindFramebuffer(GL_FRAMEBUFFER, _framebuffers[l]);
 		glViewport(0, 0, Width, Height);
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -51,7 +50,7 @@ void ShadowMaps::Render(const std::vector<glm::vec3>& casterPositions, const std
 
 		for (const GameObject& obj : objects)
 		{
-			depthShader.SetMat4("lightSpaceMVP", lightSpaceMatrix * obj.transform.GetModel());
+			depthShader.SetMat4("lightSpaceMVP", lightSpaceMatrices[l] * obj.transform.GetModel());
 			obj.mesh->Draw();
 		}
 	}

@@ -23,7 +23,7 @@ public:
 	void Init();
 
 	// Renders scene depth from each position into its own map. Leaves the default framebuffer bound.
-	void Render(const std::vector<glm::vec3>& casterPositions, const std::vector<GameObject>& objects, Shader& depthShader);
+	void Render(const std::vector<glm::mat4>& lightSpaceMatrices, const std::vector<GameObject>& objects, Shader& depthShader);
 
 	GLuint GetTexture(int index) const { return _textures[index]; }
 

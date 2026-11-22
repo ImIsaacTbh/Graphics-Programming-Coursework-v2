@@ -33,7 +33,7 @@ public:
 	// Viewpoints the shadow maps are rendered from (one map per entry, up to MaxLights).
 	// NOTE: these are kept separate from `lights` to preserve existing behaviour; they
 	// do not currently line up with the lights the shaders sample shadows for.
-	std::vector<glm::vec3> shadowCasterPositions;
+	//std::vector<glm::vec3> shadowCasterPositions;
 
 private:
 	int NextId() const;

@@ -24,11 +24,6 @@ void DemoScene::Load(Scene& scene, float aspectRatio)
 		{ glm::vec3(30.0f, -5.0f, 30.0f), glm::vec3(1.0f, 0.8f, 0.6f) }
 	};
 
-	scene.shadowCasterPositions = {
-		glm::vec3(0.0f),				// follows the orbiting light
-		glm::vec3(0.0f, -5.0f, 0.0f),
-		glm::vec3(30.0f, -5.0f, 0.0f)
-	};
 }
 
 void DemoScene::Update(Scene& scene)
@@ -36,7 +31,6 @@ void DemoScene::Update(Scene& scene)
 	glm::vec3 lightPos(glm::sin(_counter) * 10, -glm::abs(glm::sin(_counter * 5)), glm::cos(_counter) * 10);
 
 	scene.lights[0].position = lightPos;
-	scene.shadowCasterPositions[0] = lightPos;
 
 	if (GameObject* monkey = scene.FindById(_texturedMonkeyId))
 		monkey->transform.SetRot(glm::vec3(0.0, _counter * 2, 0.0));

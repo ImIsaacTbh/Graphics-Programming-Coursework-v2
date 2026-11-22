@@ -29,12 +29,9 @@ Shader::Shader(const std::string& path)
 
 	uniforms[TRANSFORM_U] = glGetUniformLocation(program, "transform");
 	uniforms[MODEL_U] = glGetUniformLocation(program, "model");
-	uniforms[LIGHT_POS_U] = glGetUniformLocation(program, "lightPos");
-	uniforms[LIGHT_COLOR_U] = glGetUniformLocation(program, "lightColor");
 	uniforms[AMBIENT_COLOR_U] = glGetUniformLocation(program, "ambientColor");
 	uniforms[BASIC_COLOUR_U] = glGetUniformLocation(program, "basicColor");
 	uniforms[VIEW_POS_U] = glGetUniformLocation(program, "viewPos");
-	uniforms[LIGHT_SPACE_MATRIX_U] = glGetUniformLocation(program, "lightSpaceMatrix");
 
 	std::cout << "Shader program " << path << " loaded with ID: " << program << std::endl;
 }
@@ -99,7 +96,7 @@ void Shader::SetLightSpaceMatrices(const std::vector<glm::mat4>& matrices)
 	}
 }
 
-void Shader::Update(const Transform& transform, const Camera& camera, const glm::vec3& lightPos, const glm::mat4& lightSpaceMatrix, const glm::vec3& basicColor)
+void Shader::Update(const Transform& transform, const Camera& camera, const glm::vec3& basicColor)
 {
 	glm::mat4 model = transform.GetModel();
 	glm::mat4 mvp = camera.GetViewProjection() * model;
@@ -107,12 +104,6 @@ void Shader::Update(const Transform& transform, const Camera& camera, const glm:
 	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, glm::value_ptr(mvp));
 	glUniformMatrix4fv(uniforms[MODEL_U], 1, GL_FALSE, glm::value_ptr(model));
 
-	if (uniforms[LIGHT_SPACE_MATRIX_U] != -1)
-		glUniformMatrix4fv(uniforms[LIGHT_SPACE_MATRIX_U], 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-	// Set lighting uniforms
-	glUniform3f(uniforms[LIGHT_POS_U], lightPos.x, lightPos.y, lightPos.z);
-	glUniform3f(uniforms[LIGHT_COLOR_U], 1.0f, 1.0f, 1.0f);
 	glUniform3f(uniforms[AMBIENT_COLOR_U], 0.2f, 0.2f, 0.2f);
 	glUniform3f(uniforms[BASIC_COLOUR_U], basicColor.x, basicColor.y, basicColor.z);
 
